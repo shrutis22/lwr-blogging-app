@@ -1,0 +1,126 @@
+<template>
+  <!--Busy Indicator-->
+  <template if:true={appStatus.isBusy}>
+    <lightning-spinner></lightning-spinner>
+  </template>
+
+  <!--Errors-->
+  <template if:true={appStatus.hasErrors}>
+    <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">
+      <span class="slds-assistive-text">error</span>
+      <span
+        class="slds-icon_container slds-icon-utility-error slds-m-right_x-small"
+      >
+        <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+          <use
+            xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#error"
+          ></use>
+        </svg>
+      </span>
+      <h2>{appStatus.message}</h2>
+    </div>
+  </template>
+
+  <!--Content-->
+  <template if:false={appStatus.hasErrors}>
+    <!--List Mode: All Articles as Cards-->
+    <template if:true={isListMode}>
+      <!--Header-->
+      <div
+        class="
+          slds-text-heading_medium
+          slds-border_bottom
+          slds-var-m-bottom_small
+        "
+      >
+        Read Articles
+      </div>
+      <lightning-layout multiple-rows>
+        <template for:each={articles} for:item="article">
+          <lightning-layout-item
+            key={article.Id}
+            size="4"
+            padding="around-small"
+          >
+            <lightning-card>
+              <div slot="title">
+                <div class="slds-media slds-media_center">
+                  <div class="slds-media__figure">
+                    <img
+                      src="assets/images/article-icon.png"
+                      class="slds-avatar"
+                    />
+                  </div>
+                  <div class="slds-media__body slds-truncate">
+                    {article.Title__c}
+                  </div>
+                </div>
+              </div>
+              <lightning-button
+                label="Read More"
+                slot="actions"
+                data-slug={article.Slug__c}
+                onclick={handleReadMoreClick}
+              ></lightning-button>
+              <div class="slds-var-p-around_small">
+                <lightning-formatted-rich-text
+                  value={article.Content__c}
+                ></lightning-formatted-rich-text>
+              </div>
+            </lightning-card>
+          </lightning-layout-item>
+        </template>
+      </lightning-layout>
+    </template>
+
+    <!--Detail Mode: Reading an Article-->
+    <template if:true={isDetailMode}>
+      <!--Breadcrumbs-->
+      <nav role="navigation" class="slds-var-m-bottom_small">
+        <ol class="slds-breadcrumb slds-list_horizontal slds-wrap">
+          <li class="slds-breadcrumb__item">
+            <a href="/read">All Articles</a>
+          </li>
+          <li class="slds-truncate">
+            &gt; <em>Reading <strong>{article.Title__c}</strong>...</em>
+          </li>
+        </ol>
+      </nav>
+
+      <div
+        class="
+          slds-text-heading_large
+          slds-var-p-bottom_x-small
+          slds-border_bottom
+        "
+      >
+        <strong>{article.Title__c}</strong>
+      </div>
+      <div class="slds-var-m-top_small slds-var-p-bottom_small">
+        <lightning-formatted-rich-text
+          value={article.Content__c}
+        ></lightning-formatted-rich-text>
+      </div>
+      <div
+        class="
+          slds-border_top
+          slds-var-p-top_x-small
+          slds-var-p-bottom_xx-large
+          slds-text-align_right
+        "
+      >
+        <span class="slds-badge">
+          <svg
+            class="slds-button__icon slds-button_icon-x_small"
+            aria-hidden="true"
+          >
+            <use
+              xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#preview"
+            ></use>
+          </svg>
+          &nbsp;{article.Views__c}
+        </span>
+      </div>
+    </template>
+  </template>
+</template>

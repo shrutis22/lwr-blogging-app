@@ -1,0 +1,14 @@
+.editor {
+  background-color: white !important;
+  border: none;
+  height: 500px;
+  width: 100%;
+}
+
+.input-title {
+  background: transparent;
+  border: none;
+  font-weight: 100;
+  outline: none;
+  width: 100%;
+}

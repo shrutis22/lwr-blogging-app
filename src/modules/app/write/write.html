@@ -1,0 +1,158 @@
+<template>
+  <!--Busy Indicator-->
+  <template if:true={appStatus.isBusy}>
+    <lightning-spinner></lightning-spinner>
+  </template>
+
+  <!--Errors-->
+  <template if:true={appStatus.hasErrors}>
+    <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">
+      <span class="slds-assistive-text">error</span>
+      <span
+        class="slds-icon_container slds-icon-utility-error slds-m-right_x-small"
+      >
+        <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+          <use
+            xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#error"
+          ></use>
+        </svg>
+      </span>
+      <h2>{appStatus.message}</h2>
+    </div>
+  </template>
+
+  <!--Content-->
+  <template if:false={appStatus.hasErrors}>
+    <!--List Mode: All Articles-->
+    <template if:true={isListMode}>
+      <!--Header-->
+      <div class="slds-border_bottom slds-var-m-bottom_small">
+        <lightning-layout>
+          <lightning-layout-item size="6" padding="around-small">
+            <span class="slds-text-heading_medium">
+              Edit and Author Articles
+            </span>
+          </lightning-layout-item>
+          <lightning-layout-item size="6" padding="around-small">
+            <div class="slds-text-align_right">
+              <lightning-button
+                variant="brand"
+                label="Compose"
+                onclick={handleComposeClick}
+              ></lightning-button>
+            </div>
+          </lightning-layout-item>
+        </lightning-layout>
+      </div>
+      <lightning-layout multiple-rows>
+        <template for:each={articles} for:item="article">
+          <lightning-layout-item
+            key={article.Id}
+            size="4"
+            padding="around-small"
+          >
+            <lightning-card>
+              <div slot="title">
+                <div class="slds-media slds-media_center">
+                  <div class="slds-media__figure">
+                    <img
+                      src="assets/images/article-icon.png"
+                      class="slds-avatar"
+                    />
+                  </div>
+                  <div class="slds-media__body slds-truncate">
+                    {article.Title__c}
+                  </div>
+                </div>
+              </div>
+              <lightning-button
+                label="Edit"
+                slot="actions"
+                data-slug={article.Slug__c}
+                onclick={handleEditClick}
+              ></lightning-button>
+              <div class="slds-var-p-around_small">
+                <lightning-formatted-rich-text
+                  value={article.Content__c}
+                ></lightning-formatted-rich-text>
+              </div>
+            </lightning-card>
+          </lightning-layout-item>
+        </template>
+      </lightning-layout>
+    </template>
+
+    <!--Edit Mode: Edit an Article-->
+    <template if:true={isEditMode}>
+      <!--Breadcrumbs-->
+      <nav role="navigation" class="slds-var-m-bottom_small">
+        <ol class="slds-breadcrumb slds-list_horizontal slds-wrap">
+          <li class="slds-breadcrumb__item">
+            <a href="/write">All Articles</a>
+          </li>
+          <li class="slds-truncate">
+            &gt; <em>Editing <strong>{editedArticle.Title__c}</strong>...</em>
+          </li>
+        </ol>
+      </nav>
+
+      <template if:true={editResponse.success}>
+        <div
+          class="
+            slds-notify slds-notify_alert
+            slds-theme_success
+            slds-var-m-vertical_small
+          "
+          role="alert"
+        >
+          <h2>{editResponse.message}</h2>
+        </div>
+      </template>
+      <div
+        class="
+          slds-text-heading_large
+          slds-var-p-bottom_x-small
+          slds-border_bottom
+        "
+      >
+        <strong>{editedArticle.Title__c}</strong>
+      </div>
+      <div class="slds-var-m-top_small slds-var-p-bottom_small">
+        <iframe lwc:dom="manual" class="editor" src="/editor"></iframe>
+      </div>
+    </template>
+
+    <!--Compose Mode: Author a New Article-->
+    <template if:true={isComposeMode}>
+      <template if:true={newResponse.success}>
+        <div
+          class="
+            slds-notify slds-notify_alert
+            slds-theme_success
+            slds-var-m-vertical_small
+          "
+          role="alert"
+        >
+          <h2>{newResponse.message}</h2>
+        </div>
+      </template>
+      <div
+        class="
+          slds-text-heading_large
+          slds-var-p-bottom_x-small
+          slds-border_bottom
+        "
+      >
+        <input
+          type="text"
+          maxlength="80"
+          class="input-title"
+          placeholder="Title goes here..."
+        />
+      </div>
+      <div class="slds-var-m-top_small slds-var-p-bottom_small">
+        <iframe lwc:dom="manual" class="editor" src="/editor"></iframe>
+      </div>
+    </template>
+  </template>
+</template>

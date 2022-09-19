@@ -1,0 +1,62 @@
+{
+  "lwc": {
+    "modules": [
+      { "dir": "$rootDir/src/modules" },
+      { "npm": "lightning-base-components" }
+    ]
+  },
+  "assets": [
+    {
+      "alias": "assetsDir",
+      "dir": "$rootDir/src/assets",
+      "urlPath": "/assets"
+    }
+  ],
+  "routes": [
+    {
+      "id": "Home",
+      "path": "/",
+      "contentTemplate": "$contentDir/read.html",
+      "layoutTemplate": "$layoutsDir/main.njk",
+      "bootstrap": {
+        "syntheticShadow": true
+      }
+    },
+    {
+      "id": "Read",
+      "path": "/read",
+      "contentTemplate": "$contentDir/read.html",
+      "layoutTemplate": "$layoutsDir/main.njk",
+      "bootstrap": {
+        "syntheticShadow": true
+      }
+    },
+    {
+      "id": "Write",
+      "path": "/write",
+      "contentTemplate": "$contentDir/write.html",
+      "layoutTemplate": "$layoutsDir/main.njk",
+      "bootstrap": {
+        "syntheticShadow": true
+      }
+    },
+    {
+      "id": "About",
+      "path": "/about",
+      "contentTemplate": "$contentDir/about.html",
+      "layoutTemplate": "$layoutsDir/main.njk",
+      "bootstrap": {
+        "syntheticShadow": true
+      }
+    },
+    {
+      "id": "Editor",
+      "path": "/editor",
+      "contentTemplate": "$contentDir/editor.html",
+      "layoutTemplate": "$layoutsDir/chromeless.njk"
+    }
+  ],
+  "staticSiteGenerator": {
+    "_additionalModules": ["@lwc/synthetic-shadow", "lwc", "lwr/navigation"]
+  }
+}

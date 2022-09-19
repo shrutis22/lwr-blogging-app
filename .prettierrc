@@ -1,0 +1,9 @@
+{
+  "tabWidth": 2,
+  "overrides": [
+    {
+      "files": "**/modules/**/**/*.html",
+      "options": {"parser": "lwc"}
+    }
+  ]
+}
