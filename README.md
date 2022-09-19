@@ -1,4 +1,4 @@
-# Simple Blogging App
+# Blogging App using LWR
 
 A simple blogging app built using LWR on Node.js.
 
